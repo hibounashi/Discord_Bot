@@ -1,5 +1,5 @@
 const { EmbedBuilder, SlashCommandBuilder, ChannelType, MessageFlags } = require('discord.js');
-const { aiFieldRoles } = require('../config/roles');
+const { aiFieldRoles, levelRoles } = require('../config/roles');
 const permissionService = require('../services/permissionService');
 
 module.exports = {
@@ -31,12 +31,26 @@ module.exports = {
     const researchChannel = guild.channels.cache.find(c => c.name === 'research');
     const challengesChannel = guild.channels.cache.find(c => c.name === 'challenges');
     const offTopicChannel = guild.channels.cache.find(c => c.name === 'off-topic');
+    const neuroMemberMention = '<@1478894166082715709>';
+
+    const formatRoleMention = (roleName) => {
+      const role = guild.roles.cache.find((cachedRole) => cachedRole.name === roleName);
+      return role ? role.toString() : `**${roleName}**`;
+    };
+
+    const levelRolesText = levelRoles
+      .map((role) => `Level ${role.minLevel}: ${formatRoleMention(role.name)}`)
+      .join('\n');
+
+    const fieldRolesText = aiFieldRoles
+      .map((role) => formatRoleMention(role.name))
+      .join('\n');
 
     // Create main intro embed
     const introEmbed = new EmbedBuilder()
       .setColor(0x6CD7E6)
       .setTitle('🧠 Welcome to SOAI Neuro World')
-      .setDescription('Hello @⚪ Neuron Seed ')
+      .setDescription(`Hello ${formatRoleMention('NEURON')}!`)
       .addFields(
         {
           name: 'About SOAI Neuro Land',
@@ -44,76 +58,33 @@ module.exports = {
           inline: false
         },
         {
-          name: '🧠 Who is Neuro?',
-          value: 'In this world, **Neuro is the brain of the community** — the spirit of innovation and intelligence that connects every member.\n\n**And you are a Neuron.** 🧬\n\nJust like neurons in a brain, each member contributes **knowledge, ideas, and energy** to make this network stronger.\n\n**Together we create a living AI ecosystem.**',
+          name: `🧠 Who is Neuro`,
+          value: `In this world, ${neuroMemberMention} is the brain of the community** — the spirit of innovation and intelligence that connects every member.\n\n**And you are a Neuron.** 🧬\n\nJust like neurons in a brain, each member contributes **knowledge, ideas, and energy** to make this network stronger.\n\n**Together we create a living AI ecosystem.**`,
           inline: false
         },
         {
-          name: '🎯 Your Journey',
+          name: '🎯 Your Journey' ,
           value: '**Earn XP** by chatting and contributing → **Level Up** to unlock roles & features → **Complete Challenges** for extra rewards → **Pick Your AI Specialty** to show expertise!',
           inline: false
         },
         {
-          name: '📚 Channel Guide',
-          value: `${generalChannel ? `🌍 ${generalChannel} - Community announcements\n` : ''}${aiDiscussionChannel ? `🤖 ${aiDiscussionChannel} - AI & tech discussions\n` : ''}${researchChannel ? `🧠 ${researchChannel} - Research & insights\n` : ''}${challengesChannel ? `🏆 ${challengesChannel} - Competitions & submissions\n` : ''}${offTopicChannel ? `💬 ${offTopicChannel} - Fun conversations\n` : ''}\n👇 **React below to choose your AI specialty!**`,
+          name: '🎖 Level Roles',
+          value: `${levelRolesText}\n\nUse \`/rank\` to track your XP progress.`,
+          inline: false
+        },
+        {
+          name: '🎓 AI Specialty Roles',
+          value: `React with the emojis below to get your AI specialty role!\n\n${fieldRolesText}\n\nYou can pick multiple specialties to show your expertise!`,
           inline: false
         }
       )
-      .setFooter({ text: '✨ You are the future of AI. Build it together!' })
+      .setFooter({ text: '⬇️ React below to get your roles!' })
       .setTimestamp();
-
-    // Create AI field selection embed
-    const fieldEmbed = new EmbedBuilder()
-      .setColor(0x6CD7E6)
-      .setTitle('🎓 Choose Your AI Specialty')
-      .setDescription('React to select your field of expertise! (You can pick multiple)\n\nYour specialty role helps personalize content and connects you with experts.')
-      .addFields(
-        {
-          name: '🧠 Deep Learning',
-          value: 'Neural networks, transformers, LLMs',
-          inline: true
-        },
-        {
-          name: '📊 Data Science',
-          value: 'Analytics, statistics, visualization',
-          inline: true
-        },
-        {
-          name: '🤖 Machine Learning',
-          value: 'Algorithms, training, models',
-          inline: true
-        },
-        {
-          name: '⚙️ AI Engineering',
-          value: 'Deployment, systems, infrastructure',
-          inline: true
-        },
-        {
-          name: '🗣 NLP',
-          value: 'Language models, text processing',
-          inline: true
-        },
-        {
-          name: '🔍 Computer Vision',
-          value: 'Image recognition, object detection',
-          inline: true
-        },
-        {
-          name: '🎮 Reinforcement Learning',
-          value: 'Agents, rewards, optimization',
-          inline: true
-        },
-        {
-          name: '🧪 Research AI',
-          value: 'Cutting-edge research & theory',
-          inline: true
-        }
-      )
-      .setFooter({ text: '⬇️ React below to get your roles!' });
 
     try {
       const sentMessage = await targetChannel.send({
-        embeds: [introEmbed, fieldEmbed]
+        embeds: [introEmbed],
+        allowedMentions: { parse: [] }
       });
 
       // Add reactions for AI field selection

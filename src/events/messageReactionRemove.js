@@ -13,7 +13,7 @@ module.exports = {
 
       // Check if this is a field role selection message by checking embeds
       const isFieldRoleMessage = reaction.message.embeds?.some(embed => 
-        embed.title?.includes('Choose Your AI Specialty')
+        embed.fields?.some(field => field.name?.includes('AI Specialty Roles'))
       );
       
       if (isFieldRoleMessage) {

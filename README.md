@@ -6,6 +6,18 @@ A comprehensive gamification system featuring XP progression, level roles, AI sp
 
 ---
 
+## 📸 Screenshots
+
+### User Profile & Stats
+![User Profile](profile.png)
+*View your rank, level, XP progress, and stats with `/rank` or `/stats` commands*
+
+### Commands in Action
+![Commands](cmd.png)
+*Easy-to-use slash commands for all bot features*
+
+---
+
 ## ✨ Features
 
 ### 🎮 Core Gamification System
@@ -203,6 +215,8 @@ Every Monday at 00:00 UTC:
 ---
 
 ## 🎮 Commands Reference
+
+> 💡 **See commands in action:** Check the [screenshots above](#-screenshots)
 
 ### User Commands
 | Command | Description |

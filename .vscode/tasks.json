@@ -1,0 +1,66 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "npm install dependencies",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"install"
+			]
+		},
+		{
+			"label": "npm install via cmd",
+			"type": "shell",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"npm install"
+			]
+		},
+		{
+			"label": "deploy slash commands",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"deploy"
+			]
+		},
+		{
+			"label": "start bot runtime",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"start"
+			]
+		},
+		{
+			"label": "install deps now",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"install"
+			]
+		},
+		{
+			"label": "deploy now",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"deploy"
+			]
+		},
+		{
+			"label": "start now",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"start"
+			]
+		}
+	]
+}
